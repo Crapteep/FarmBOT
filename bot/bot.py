@@ -8,13 +8,16 @@ class Bot:
 
     def run(self):
         while True:
-            print("Checking farms..")
-            for animal_farm in self.account.animalFarms:
-                animal_farm.collect()
+            try:
+                print("Checking farms..")
+                for animal_farm in self.account.animalFarms:
+                    animal_farm.collect()
 
-            for plant_farm in self.account.plantFarms:
-                plant_farm.collect()
-            print("Farm check completed.")
-            time.sleep(120)
+                for plant_farm in self.account.plantFarms:
+                    plant_farm.collect()
+                print("Farm check completed.")
+                time.sleep(120)
+            except:
+                time.sleep(60)
 
             

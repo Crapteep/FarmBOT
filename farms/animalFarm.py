@@ -35,7 +35,11 @@ class AnimalFarm(Farm):
             self.client.url, headers=self.client.headers, params=params)
         
         if response.status_code == 200:
-            rsp_data = json.loads(response.content.decode("utf-8"))
+            try:
+                rsp_data = json.loads(response.content.decode("utf-8"))
+            except json.JSONDecodeError as e:
+                print(f"Error decoding JSON: {e}")
+
             farm_data = rsp_data['datablock'][1]
 
             for value in farm_data.values():
