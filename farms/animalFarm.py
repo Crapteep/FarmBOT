@@ -19,6 +19,7 @@ class AnimalFarm(Farm):
 
     def collect(self):
         self.collect_items()
+        self.update()
         self.feed()
         self.update()
 

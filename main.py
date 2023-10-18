@@ -1,6 +1,9 @@
+from fastapi import FastAPI, BackgroundTasks
+from fastapi.middleware.cors import CORSMiddleware
 from bot.bot import Bot
 import os
 from dotenv import load_dotenv
+
 
 headers = {
     "Accept": "*/*",
@@ -24,12 +27,43 @@ headers = {
 }
 
 
-if __name__ == "__main__":
-    load_dotenv()
-    username = os.getenv("NICKNAME")
-    password = os.getenv("PASSWORD")
-    server = os.getenv("SERVER")
-    phpsessid = os.getenv("PHPSESSID")
+load_dotenv()
+username = os.getenv("NICKNAME")
+password = os.getenv("PASSWORD")
+server = os.getenv("SERVER")
+phpsessid = os.getenv("PHPSESSID")
 
+app = FastAPI()
+
+origins = [
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'http://192.168.0.103:3000',
+    'http://192.168.0.103:8000'
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+def start_farm():
     bot = Bot(headers=headers, phpsessid=phpsessid, username=username, password=password, server=server, seed=17)
     bot.run()
+
+@app.get("/")
+async def index():
+    return {"message": "Hello there!"}
+
+
+@app.get("/start")
+async def start(background_tasks: BackgroundTasks):
+    background_tasks.add_task(start_farm)
+    return {"message": "Farming will start soon"}
+
+
+
