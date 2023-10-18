@@ -32,7 +32,6 @@ username = os.getenv("NICKNAME")
 password = os.getenv("PASSWORD")
 server = os.getenv("SERVER")
 phpsessid = os.getenv("PHPSESSID")
-seed = os.getenv("SEED")
 
 app = FastAPI()
 
@@ -52,7 +51,7 @@ app.add_middleware(
 )
 
 
-def start_farm():
+def start_farm(seed):
     bot = Bot(headers=headers, phpsessid=phpsessid, username=username, password=password, server=server, seed=seed)
     bot.run()
 
@@ -61,9 +60,9 @@ async def index():
     return {"message": "Hello there!"}
 
 
-@app.get("/start")
-async def start(background_tasks: BackgroundTasks):
-    background_tasks.add_task(start_farm)
+@app.get("/start/{seed}")
+async def start(seed: int, background_tasks: BackgroundTasks):
+    background_tasks.add_task(start_farm, seed)
     return {"message": "Farming will start soon"}
 
 

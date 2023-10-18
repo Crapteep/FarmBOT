@@ -4,9 +4,15 @@ import time
 
 class Bot:
     def __init__(self, headers, phpsessid, username, password, server, seed) -> None:
-        self.account = account.AccountData(headers=headers, phpsessid=phpsessid, username=username, password=password, server=server, seed=seed)
+        self.headers = headers
+        self.phpsessid = phpsessid
+        self.username = username
+        self.password = password
+        self.server = server
+        self.seed = seed
 
     def run(self):
+        self.account = account.AccountData(headers=self.headers, phpsessid=self.phpsessid, username=self.username, password=self.password, server=self.server, seed=self.seed)
         while True:
             try:
                 print("Checking farms..")
@@ -19,5 +25,6 @@ class Bot:
                 time.sleep(120)
             except:
                 time.sleep(60)
+                self.account = account.AccountData(headers=self.headers, phpsessid=self.phpsessid, username=self.username, password=self.password, server=self.server, seed=self.seed)
 
             
