@@ -38,6 +38,7 @@ class AnimalFarm(Farm):
         if response.status_code == 200:
             try:
                 rsp_data = json.loads(response.content.decode("utf-8"))
+                print(rsp_data)
             except json.JSONDecodeError as e:
                 print(f"Error decoding JSON: {e}")
 

@@ -32,6 +32,7 @@ username = os.getenv("NICKNAME")
 password = os.getenv("PASSWORD")
 server = os.getenv("SERVER")
 phpsessid = os.getenv("PHPSESSID")
+seed = os.getenv("SEED")
 
 app = FastAPI()
 
@@ -52,7 +53,7 @@ app.add_middleware(
 
 
 def start_farm():
-    bot = Bot(headers=headers, phpsessid=phpsessid, username=username, password=password, server=server, seed=17)
+    bot = Bot(headers=headers, phpsessid=phpsessid, username=username, password=password, server=server, seed=seed)
     bot.run()
 
 @app.get("/")
