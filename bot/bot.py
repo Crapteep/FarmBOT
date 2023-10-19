@@ -17,15 +17,17 @@ class Bot:
         while True:
             try:
                 print("Checking farms..")
+                print(self.account.animalFarms[-1].name)
                 for animal_farm in self.account.animalFarms:
                     animal_farm.collect()
 
                 for plant_farm in self.account.plantFarms:
                     plant_farm.collect()
                 print("Farm check completed.")
-                await asyncio.sleep(120)
-            except:
-                await asyncio.sleep(120)
+                await asyncio.sleep(60 * 2)
+            except Exception as e:
+                print("ERROR: ", e)
+                await asyncio.sleep(60)
                 self.account = account.AccountData(headers=self.headers, phpsessid=self.phpsessid, username=self.username, password=self.password, server=self.server, seed=self.seed)
 
-            
+                

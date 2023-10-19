@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from bot.bot import Bot
 import os
 from dotenv import load_dotenv
+import asyncio
+
 
 
 headers = {
@@ -32,15 +34,14 @@ username = os.getenv("NICKNAME")
 password = os.getenv("PASSWORD")
 server = os.getenv("SERVER")
 phpsessid = os.getenv("PHPSESSID")
-seed = os.getenv("SEED", 8)
+seed = int(os.getenv("SEED", 8))
+
 
 app = FastAPI()
 
 origins = [
     'http://localhost:3000',
-    'http://localhost:8000',
-    'http://192.168.0.103:3000',
-    'http://192.168.0.103:8000'
+    'http://localhost:8000'
 ]
 
 app.add_middleware(
@@ -51,9 +52,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-import asyncio
-
 async def start_farm():
     bot = Bot(headers=headers, phpsessid=phpsessid, username=username, password=password, server=server, seed=seed)
     await bot.run()
@@ -63,9 +61,9 @@ async def start_farm():
 async def on_startup():
     loop = asyncio.get_event_loop()
     task = loop.create_task(start_farm())
-    task
 
 @app.get('/')
 async def index():
     return {"name": "FarmBOT",
             "author": "Crapteep"}
+

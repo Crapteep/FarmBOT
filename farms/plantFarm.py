@@ -54,7 +54,11 @@ class PlantFarm(Farm):
         response = requests.get(
             self.client.url, headers=self.client.headers, params=params)
         if response.status_code == 200:
-            rsp_data = json.loads(response.content.decode("utf-8"))
+            try:
+                rsp_data = json.loads(response.content.decode("utf-8"))
+            except json.JSONDecodeError as e:
+                print(f"Error decoding JSON: {e}")
+
             fields_data = rsp_data['datablock'][1]
             fields = []
             for field_id, field_data in fields_data.items():
@@ -128,7 +132,8 @@ class PlantFarm(Farm):
 
         return new_area
 
-    def plant(self, seed: list, cid=22):
+
+    def plant(self, seed: int, cid=22):
         field_range = self.plant_range.get(seed)
         empty_fields = self.get_empty_fields()
         if not empty_fields:
