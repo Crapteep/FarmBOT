@@ -1,6 +1,7 @@
 # from account.account import AccountData
 from account import account
 import time
+import asyncio
 
 class Bot:
     def __init__(self, headers, phpsessid, username, password, server, seed) -> None:
@@ -11,7 +12,7 @@ class Bot:
         self.server = server
         self.seed = seed
 
-    def run(self):
+    async def run(self):
         self.account = account.AccountData(headers=self.headers, phpsessid=self.phpsessid, username=self.username, password=self.password, server=self.server, seed=self.seed)
         while True:
             try:
@@ -22,9 +23,9 @@ class Bot:
                 for plant_farm in self.account.plantFarms:
                     plant_farm.collect()
                 print("Farm check completed.")
-                time.sleep(120)
+                await asyncio.sleep(120)
             except:
-                time.sleep(60)
+                await asyncio.sleep(120)
                 self.account = account.AccountData(headers=self.headers, phpsessid=self.phpsessid, username=self.username, password=self.password, server=self.server, seed=self.seed)
 
             

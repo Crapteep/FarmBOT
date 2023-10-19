@@ -1,4 +1,4 @@
-from fastapi import FastAPI, BackgroundTasks
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from bot.bot import Bot
 import os
@@ -32,6 +32,7 @@ username = os.getenv("NICKNAME")
 password = os.getenv("PASSWORD")
 server = os.getenv("SERVER")
 phpsessid = os.getenv("PHPSESSID")
+seed = os.getenv("SEED", 8)
 
 app = FastAPI()
 
@@ -51,19 +52,20 @@ app.add_middleware(
 )
 
 
-def start_farm(seed):
+import asyncio
+
+async def start_farm():
     bot = Bot(headers=headers, phpsessid=phpsessid, username=username, password=password, server=server, seed=seed)
-    bot.run()
+    await bot.run()
 
-@app.get("/")
+
+@app.on_event("startup")
+async def on_startup():
+    loop = asyncio.get_event_loop()
+    task = loop.create_task(start_farm())
+    task
+
+@app.get('/')
 async def index():
-    return {"message": "Hello there!"}
-
-
-@app.get("/start/{seed}")
-async def start(seed: int, background_tasks: BackgroundTasks):
-    background_tasks.add_task(start_farm, seed)
-    return {"message": "Farming will start soon"}
-
-
-
+    return {"name": "FarmBOT",
+            "author": "Crapteep"}
