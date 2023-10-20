@@ -1,7 +1,5 @@
 from farms.farm import Farm, AnimalData
 from helpers.helper import Helper
-import requests
-import json
 
 
 
@@ -66,7 +64,8 @@ class AnimalFarm(Farm):
                 if response is not None:
                     self.update()
                     Helper.response(self.farm_id, self.position, "Animal products have been collected")
-
+            else:
+                Helper.response(self.farm_id, self.position, "Animal products are not ready yet")
 
     def feed(self):
         if self.animalsData is not None and hasattr(self.animalsData, 'rest') and self.animalsData.rest is not None and self.animalsData.rest > 0:

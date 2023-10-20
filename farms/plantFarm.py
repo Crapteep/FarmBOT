@@ -1,26 +1,55 @@
 from farms.farm import Farm, FieldData
 from helpers.helper import Helper
-import requests
-import json
 
 
 class PlantFarm(Farm):
-    CROP = 1
+    WHEAT = 1
     CORN = 2
     CLOVER = 3
-    RAPE = 4
-    FODDER_BEET = 5
-    CORNFLOWERS = 8
+    RAPESEED = 4
+    SUGAR_BEETS = 5
+    HERBS = 6
+    SUNFLOWER = 7
+    BACHELORS_BUTTONS = 8
     CARROT = 17
+    CUCUMBER = 18
+    RADISH = 19
+    STRAWBERRY = 20
+    TOMATO = 21
+    ONION = 22
+    SPINACH = 23
+    CAULIFLOWER = 24
+    POTATO = 26
+    ASPARAGUS = 29
+    ZUCCHINI = 31
+    THISTLES = 108
+    DAISIES = 109
+    TEA = 129
+
 
     plant_range = {
-        CROP: 2,
+        WHEAT: 2,
         CORN: 4,
         CLOVER: 2,
-        RAPE: 4,
-        FODDER_BEET: 4,
-        CORNFLOWERS: 4,
-        CARROT: 1
+        RAPESEED: 4,
+        SUGAR_BEETS: 4,
+        HERBS: 4,
+        SUNFLOWER: 4,
+        BACHELORS_BUTTONS: 4,
+        CARROT: 1,
+        CUCUMBER: 1,
+        RADISH: 1,
+        STRAWBERRY: 1,
+        TOMATO: 1,
+        ONION: 1,
+        SPINACH: 1,
+        CAULIFLOWER: 1,
+        POTATO: 1,
+        ASPARAGUS: 2,
+        ZUCCHINI: 1,
+        THISTLES: 4,
+        DAISIES: 4,
+        TEA: 4,
     }
 
     def __init__(self, farm_id, position, buildingid, level, status, animals, product, name, client, items, seed):
