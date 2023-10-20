@@ -9,6 +9,7 @@ FarmBOT is an application that allows for the automatic execution of actions in 
 3. [Run Locally](#run-locally)
 4. [Supported crops and their seeds](#supported-crops-and-their-seeds)
 5. [Roadmap](#roadmap)
+6. [Screenshots](#roadmap)
 
 ## Project description
 The aim of the project was to create a bot that would handle essential game functions in Wolni Farmerzy, such as harvesting crops from all gardens, planting selected crops, watering plants, collecting animal products, and feeding animals. These tasks are time-consuming due to the game's unoptimized interface. The development of this bot was initiated at the request of a friend who found these tasks to be particularly cumbersome. The bot leverages FastAPI (though it is not mandatory) for the purpose of running it on a server, ensuring uninterrupted operation.

@@ -32,7 +32,7 @@ headers = {
 load_dotenv()
 username = os.getenv("NICKNAME")
 password = os.getenv("PASSWORD")
-server = os.getenv("SERVER")
+server = os.getenv("SERVER", 1)
 phpsessid = os.getenv("PHPSESSID")
 seed = int(os.getenv("SEED", 8))
 
