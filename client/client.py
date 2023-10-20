@@ -1,7 +1,7 @@
 import requests
 from helpers.helper import Helper
 import time
-
+import threading
 
 
 
@@ -15,8 +15,15 @@ class Client:
         self.server = server
         self.wunr = None
         self.rid = None
+        self.connected = False
         self.find_rid()
+        
 
+
+        self.connected_thread = threading.Thread(target=self.monitor_connected)
+        self.connected_thread.daemon = True
+
+        self.connected_thread.start()
 
     def find_rid(self):
         actual_time = str(time.time()).replace('.', '')
@@ -48,9 +55,21 @@ class Client:
             self.rid = Helper.regular_expression(
                 content_str, r"var rid = '([a-f0-9]+)';")
             self.update_headers()
+            self.connected = True
         else:
             print("Login error")
 
 
     def update_headers(self):
         self.headers["Cookie"] = self.headers["Cookie"].format(self.phpsessid, self.wunr)
+
+
+    def monitor_connected(self):
+        while True:
+            if self.connected is False:
+                try:
+                    self.find_rid()
+                    print('The new rid has been set')
+                except Exception as e:
+                    print("ERROR: ", e)
+            time.sleep(5)

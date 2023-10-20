@@ -66,3 +66,12 @@ class AccountData(Client):
                             self.animalFarms.append(farm_instance)
         else:
             print("Error while loading farms")
+
+    def check_farms(self):
+        if self.connected:
+            print("Checking farms..")
+            for animal_farm in self.animalFarms:
+                animal_farm.collect()
+            for plant_farm in self.plantFarms:
+                plant_farm.collect()
+            print("Farm check completed.")

@@ -18,10 +18,10 @@ class AnimalFarm(Farm):
 
 
     def collect(self):
+        self.update()
         self.collect_items()
-        self.update()
         self.feed()
-        self.update()
+
 
 
     def init_farm(self):
@@ -32,15 +32,9 @@ class AnimalFarm(Farm):
             "position": self.position,
         }
 
-        response = requests.get(
-            self.client.url, headers=self.client.headers, params=params)
-        
-        if response.status_code == 200:
-            try:
-                rsp_data = json.loads(response.content.decode("utf-8"))
-            except json.JSONDecodeError as e:
-                print(f"Error decoding JSON: {e}")
+        rsp_data = self.fetch_farm_data(params=params)
 
+        if rsp_data is not None:
             farm_data = rsp_data['datablock'][1]
 
             for value in farm_data.values():
@@ -56,12 +50,8 @@ class AnimalFarm(Farm):
                         rest=data["rest"],
                         feed=data["feed"],
                     )
-
             return animal
 
-        else:
-            Helper.response(self.farm_id, self.position, "Error while loading farm")
-        
 
     def collect_items(self):
         params = {
@@ -70,19 +60,16 @@ class AnimalFarm(Farm):
             "farm": self.farm_id,
             "position": self.position,
         }
-
-        if self.animalsData.remain == 1:
-            response = requests.get(
-                self.client.url, headers=self.client.headers, params=params)
-
-            if response.status_code == 200:
-                Helper.response(self.farm_id, self.position, "Animal products have been collected")
-            else:
-                Helper.response(self.farm_id, self.position, "Error while loading animal farm")
+        if self.client.connected:
+            if self.animalsData.remain == 1:
+                response = self.fetch_farm_data(params=params)
+                if response is not None:
+                    self.update()
+                    Helper.response(self.farm_id, self.position, "Animal products have been collected")
 
 
     def feed(self):
-        if self.animalsData.rest > 0:
+        if self.animalsData is not None and hasattr(self.animalsData, 'rest') and self.animalsData.rest is not None and self.animalsData.rest > 0:
             feed_items = self.animalsData.feed.items()
             sorted_feed_items = sorted(feed_items, key=lambda item: item[1]["time"], reverse=True)
 
@@ -115,13 +102,10 @@ class AnimalFarm(Farm):
                 "guildjob": 0
             }
 
-            response = requests.get(
-                self.client.url, headers=self.client.headers, params=params)
-
-            if response.status_code == 200:
+            response = self.fetch_farm_data(params=params)
+            if response is not None:
+                self.update()
                 Helper.response(self.farm_id, self.position, "All the animals have been fed")
-            else:
-                Helper.response(self.farm_id, self.position, "Error in feeding animals on the farm")
 
 
     def get_item_amount(self, pid):

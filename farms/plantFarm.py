@@ -28,6 +28,7 @@ class PlantFarm(Farm):
                          status, animals, product, name, client, items, seed)
         self.fields = None
         self.update()
+        
 
 
     def update(self):
@@ -35,12 +36,10 @@ class PlantFarm(Farm):
 
 
     def collect(self):
+        self.update()
         self.harvest()
-        self.update()
         self.plant(seed=self.seed)
-        self.update()
         self.water()
-        self.update()
 
 
     def init_garden(self) -> list:
@@ -51,14 +50,8 @@ class PlantFarm(Farm):
             "position": self.position,
         }
 
-        response = requests.get(
-            self.client.url, headers=self.client.headers, params=params)
-        if response.status_code == 200:
-            try:
-                rsp_data = json.loads(response.content.decode("utf-8"))
-            except json.JSONDecodeError as e:
-                print(f"Error decoding JSON: {e}")
-
+        rsp_data = self.fetch_farm_data(params=params)
+        if rsp_data is not None:
             fields_data = rsp_data['datablock'][1]
             fields = []
             for field_id, field_data in fields_data.items():
@@ -80,10 +73,8 @@ class PlantFarm(Farm):
                 fields.append(field)
 
             self.fields = fields
-        else:
-            Helper.response(self.farm_id, self.position, "Error while loading gardens")
 
-
+    
     def harvest(self):
         params = {
             "rid": self.client.rid,
@@ -91,12 +82,14 @@ class PlantFarm(Farm):
             "farm": self.farm_id,
             "position": self.position
         }
-
-        response = requests.get(self.client.url, headers=self.client.headers, params=params)
-        if response.status_code == 200:
-            Helper.response(self.farm_id, self.position, "All the crops have been harvested")
-        else:
-            Helper.response(self.farm_id, self.position, "Error while loading garden")
+        response = self.fetch_farm_data(params=params)
+        
+        if response is not None:
+            if type(response["datablock"]) == list:
+                Helper.response(self.farm_id, self.position, "There are no ready-made plants here yet")
+            else:
+                self.update()
+                Helper.response(self.farm_id, self.position, "All the crops have been harvested")
 
 
     def get_empty_fields(self):
@@ -137,7 +130,7 @@ class PlantFarm(Farm):
         field_range = self.plant_range.get(seed)
         empty_fields = self.get_empty_fields()
         if not empty_fields:
-            print("No ready-made plants")
+            Helper.response(self.farm_id, self.position, "No ready-made plants")
             return 0
 
         fields_area = self.calculate_area(
@@ -150,17 +143,17 @@ class PlantFarm(Farm):
 
         params = params + f"&cid={cid}"
         url = f"{self.client.url}?rid={self.client.rid}&mode=garden_plant&farm={self.farm_id}&position={self.position}" + params
-        response = requests.get(url, headers=self.client.headers)
-        if response.status_code == 200:
+
+        response = self.fetch_farm_data(url=url)
+        if response is not None:
+            self.update()
             Helper.response(self.farm_id, self.position, "All the crops have been planted")
-        else:
-            Helper.response(self.farm_id, self.position, "Error in planting plants")
 
 
     def water(self):
         unwatered_fields = self.get_unwatered_fields()
         if not unwatered_fields:
-            print('No plants to water')
+            Helper.response(self.farm_id, self.position, "No plants to water")
             return 0
 
         unwatered_fields_cpy = unwatered_fields.copy()
@@ -187,8 +180,7 @@ class PlantFarm(Farm):
 
         url = f"{self.client.url}?rid={self.client.rid}&mode=garden_water&farm={self.farm_id}&position={self.position}" + params
 
-        response = requests.get(url, headers=self.client.headers)
-        if response.status_code == 200:
+        response = self.fetch_farm_data(url=url)
+        if response is not None:
+            self.update()
             Helper.response(self.farm_id, self.position, "All the crops have been watered")
-        else:
-            Helper.response(self.farm_id, self.position, "Error in watering plants")
