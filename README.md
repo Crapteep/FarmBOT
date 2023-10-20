@@ -94,5 +94,5 @@ The bot will initiate its operations upon startup. The bot will be running on po
 - At this point, harvesting is only possible with the "Harvest All" function available in the game
 ## Screenshots
 
-![Startup Farm](https://github.com/Crapteep/FarmBOT/blob/master/screenshots/startup_farm.png)
+![Startup Farm](https://github.com/Crapteep/FarmBOT/blob/master/screenshots/startup_f.png)
 
