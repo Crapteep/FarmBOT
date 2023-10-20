@@ -1,5 +1,5 @@
 
-# FarmBOT - Automating Wolni Farmerzy Game
+# FarmBOT - Automation of the "Wolni Farmerzy" game
 
 FarmBOT is an application that allows for the automatic execution of actions in the Wolni Farmerzy game.
 
@@ -32,25 +32,25 @@ To run this project, you will need to add the following environment variables to
 Clone the project
 
 ```bash
-  git clone https://github.com/Crapteep/FarmBOT
+git clone https://github.com/Crapteep/FarmBOT
 ```
 
 Go to the project directory
 
 ```bash
-  cd my-project
+cd FarmBOT
 ```
 
 Install dependencies
 
 ```bash
-  pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 Start the server
 
 ```bash
-  uvicorn main:app --reload
+uvicorn main:app --reload
 ```
 
 The bot will initiate its operations upon startup. The bot will be running on port 8000. You can now access the API interface at: http://localhost:8000
