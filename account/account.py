@@ -38,8 +38,11 @@ class AccountData(Client):
             farms_data = rsp_data['updateblock']['farms']['farms']
             items_data = rsp_data["updateblock"]["stock"]["stock"]["1"]
             for items in items_data.values():
-                for val in items.values():
-                    self.items.append(val)
+               
+                if isinstance(items, dict):
+                    for val in items.values():
+                        self.items.append(val)
+          
 
             for farm_id, farms in farms_data.items():
                 for _, farm in farms.items():
