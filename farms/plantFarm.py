@@ -22,6 +22,8 @@ class PlantFarm(Farm):
     POTATO = 26
     ASPARAGUS = 29
     ZUCCHINI = 31
+    BERRIES = 32
+    RASPBERRIES = 33
     THISTLES = 108
     DAISIES = 109
     TEA = 129
@@ -47,6 +49,8 @@ class PlantFarm(Farm):
         POTATO: 1,
         ASPARAGUS: 2,
         ZUCCHINI: 1,
+        BERRIES: 1,
+        RASPBERRIES: 1,
         THISTLES: 4,
         DAISIES: 4,
         TEA: 4,
