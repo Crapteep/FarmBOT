@@ -24,6 +24,8 @@ class PlantFarm(Farm):
     ZUCCHINI = 31
     BERRIES = 32
     RASPBERRIES = 33
+    CURRANTS = 34
+    BLACKBERRIES = 35
     THISTLES = 108
     DAISIES = 109
     TEA = 129
@@ -51,6 +53,8 @@ class PlantFarm(Farm):
         ZUCCHINI: 1,
         BERRIES: 1,
         RASPBERRIES: 1,
+        CURRANTS: 1,
+        BLACKBERRIES: 1,
         THISTLES: 4,
         DAISIES: 4,
         TEA: 4,
