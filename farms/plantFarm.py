@@ -26,6 +26,7 @@ class PlantFarm(Farm):
     RASPBERRIES = 33
     CURRANTS = 34
     BLACKBERRIES = 35
+    MIRABELLES = 36
     THISTLES = 108
     DAISIES = 109
     TEA = 129
@@ -55,6 +56,7 @@ class PlantFarm(Farm):
         RASPBERRIES: 1,
         CURRANTS: 1,
         BLACKBERRIES: 1,
+        MIRABELLES: 4,
         THISTLES: 4,
         DAISIES: 4,
         TEA: 4,

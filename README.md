@@ -83,6 +83,7 @@ The bot will initiate its operations upon startup. The bot will be running on po
 | Raspberries| 33   |
 | Currants   | 34   |
 |Blackberries| 35   |
+| Mirabelles | 36   |
 | Thistles   | 108  |
 | Daisies    | 109  |
 | Tea        | 129  |
