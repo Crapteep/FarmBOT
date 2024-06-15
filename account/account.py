@@ -1,5 +1,6 @@
 from farms.plantFarm import PlantFarm
 from farms.animalFarm import AnimalFarm
+from farms.itemFarm import ItemFarm
 from client.client import Client
 import requests
 import json
@@ -11,7 +12,10 @@ class AccountData(Client):
         "Kurnik": AnimalFarm,
         "Obora": AnimalFarm,
         "Owczarnia": AnimalFarm,
-        "Kozia chatka": AnimalFarm
+        "Kozia chatka": AnimalFarm,
+        "Hodowla rybek": AnimalFarm,
+        "Woliera": AnimalFarm,
+        "Serowarnia": ItemFarm
     }
 
     def __init__(self, headers, phpsessid, username, password, server, seed):
@@ -19,6 +23,7 @@ class AccountData(Client):
                          username=username, password=password, server=server)
         self.plantFarms = []
         self.animalFarms = []
+        self.itemFarms = []
         self.seed = seed
         self.items = []
         self.init_farms()
@@ -37,9 +42,10 @@ class AccountData(Client):
             rsp_data = json.loads(response.content.decode("utf-8"))
             farms_data = rsp_data['updateblock']['farms']['farms']
             items_data = rsp_data["updateblock"]["stock"]["stock"]["1"]
-            for items in items_data.values():
-                for val in items.values():
-                    self.items.append(val)
+            for subcategory in items_data.values():
+                if type(subcategory) == dict:
+                    for item in subcategory.values():
+                        self.items.append(item)
 
             for farm_id, farms in farms_data.items():
                 for _, farm in farms.items():
@@ -60,10 +66,15 @@ class AccountData(Client):
                             items=self.items,
                             seed=self.seed
                         )
-                        if farm_type == "Pole":
+
+                        if farm_class is PlantFarm:
                             self.plantFarms.append(farm_instance)
-                        else:
+                        elif farm_class is AnimalFarm:
                             self.animalFarms.append(farm_instance)
+                        elif farm_class is ItemFarm:
+                            self.itemFarms.append(farm_instance)
+                        else:
+                            print("Unknown type of farm.")
         else:
             print("Error while loading farms")
 
@@ -74,4 +85,6 @@ class AccountData(Client):
                 animal_farm.collect()
             for plant_farm in self.plantFarms:
                 plant_farm.collect()
+            for item_farm in self.itemFarms:
+                item_farm.collect()
             print("Farm check completed.")

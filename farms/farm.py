@@ -63,3 +63,9 @@ class AnimalData:
     rest: int
     feed: dict
 
+
+@dataclass
+class SlotData:
+    pid: int
+    remain: int
+    amount: int

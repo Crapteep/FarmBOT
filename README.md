@@ -79,6 +79,11 @@ The bot will initiate its operations upon startup. The bot will be running on po
 | Potato     | 26   |
 | Asparagus  | 29   |
 | Zucchini   | 31   |
+| Berries    | 32   |
+| Raspberries| 33   |
+| Currants   | 34   |
+|Blackberries| 35   |
+| Mirabelles | 36   |
 | Thistles   | 108  |
 | Daisies    | 109  |
 | Tea        | 129  |
@@ -96,4 +101,3 @@ The bot will initiate its operations upon startup. The bot will be running on po
 ## Screenshots
 
 ![Startup Farm](https://github.com/Crapteep/FarmBOT/blob/master/screenshots/startup_f.png)
-
